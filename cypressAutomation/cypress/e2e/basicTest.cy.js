@@ -12,7 +12,7 @@ describe('Basic Bofore Test', () => {
       cy.url().should('include', '/dashboard');
       cy.get('.ant-menu').find('.ant-menu-submenu').as('menu');
       cy.get('@menu').should('have.length.gt', 4);
-      cy.get('@menu').each(($el) => {
+      cy.get('@menu').each(($el) => { // We want to run through all these elements
         let role = $el.attr('role');
         if(role !== 'menuitem') { // is not a menu item
            let x = $el.find('div').attr('role');
