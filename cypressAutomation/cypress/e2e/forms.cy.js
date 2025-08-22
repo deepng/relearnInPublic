@@ -68,7 +68,29 @@ describe('Automate Radio buttons', () => {
     });
     
     it('open new tab', () => {
+        cy.get('#opentab').should('exist').invoke('removeAttr', 'target').click();
+        cy.origin('https://www.qaclickacademy.com', () => {
+            cy.url().should('include', 'qaacademy.com');
+        })
         
+        cy.go('back'); // Go back to the previous page
     });
+    
+    it('Table columns', () => {
+        let secondColumn = cy.get('tr td:nth-child(2)');
+        secondColumn.should('exist');
+        secondColumn.each(($el, index) => {
+            let text = $el.text();
+            if(text.includes('Python')) {
+                secondColumn.eq(index).next().then((price) => { // then() is used to resolve the promise since we are using a jquery object
+                    let priceText = price.text();
+                    expect(priceText).to.equal('25');
+                })
+            }
+        })
+
+    })
+
+    
 
 })
