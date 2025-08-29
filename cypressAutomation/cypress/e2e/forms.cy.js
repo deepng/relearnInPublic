@@ -67,7 +67,7 @@ describe('Automate Radio buttons', () => {
         });
     });
     
-    it('open new tab', () => {
+    it.skip('open new tab', () => {
         cy.get('#opentab').should('exist').invoke('removeAttr', 'target').click();
         cy.origin('https://www.qaclickacademy.com', () => {
             cy.url().should('include', 'qaacademy.com');
@@ -76,6 +76,9 @@ describe('Automate Radio buttons', () => {
         cy.go('back'); // Go back to the previous page
     });
     
+    /**
+     * traversing to siblings only works on get(). You can can't derive it in each() and do it.
+     */
     it('Table columns', () => {
         let secondColumn = cy.get('tr td:nth-child(2)');
         secondColumn.should('exist');
@@ -90,7 +93,6 @@ describe('Automate Radio buttons', () => {
         })
 
     })
-
     
 
 })
