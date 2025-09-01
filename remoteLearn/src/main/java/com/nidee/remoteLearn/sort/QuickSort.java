@@ -1,20 +1,13 @@
 package com.nidee.remoteLearn.sort;
 
-import java.util.Collection;
 import java.util.List;
 
 public class QuickSort implements Sort {
 
     @Override
-    public Collection<?> resolve(Collection<?> collection) {
-        for(Object obj : collection) {
-            if(obj instanceof int[]) {
-                int[] array = (int[]) obj;
-                quickSort(array, 0, array.length - 1);
-                return List.of(array);
-            }
-        }
-        return List.of(collection);
+    public int[] resolveInt(int[] array) {
+        quickSort(array, 0, array.length - 1);
+        return array;
 
     }
 
@@ -28,19 +21,21 @@ public class QuickSort implements Sort {
 
     private int partition(int[] array, int l, int h) {
         if(l >= h || l < 0) return -1;
-        int pivot = array[h];
-        int i = l-1;
-        int j = h+1;
+        int pivot = array[(h-l)/2 + 1];
+        int i = l;
+        int j = h;
         while (i < j) {
-            i++;
-            j--;
-            if(array[i] < pivot || array[j] > pivot) {
-                continue;
+            while (array[i] < pivot) {
+                i++;
             }
-            if(i < j)
+            while (array[j] > pivot) {
+                j--;
+            }
+            if(i < j) {
                 swap(array, i, j);
+            }
         }
-        pivot = i;
+        pivot = j;
         return pivot;
     }
 

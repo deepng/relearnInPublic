@@ -5,14 +5,14 @@ import com.nidee.remoteLearn.sort.Sort;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import java.util.Collection;
-import java.util.Collections;
+
+import java.util.Arrays;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class SortTest {
 
@@ -39,14 +39,16 @@ public class SortTest {
             case "merge":
                 // sort = new MergeSort();
                 break;
+            case "quick":
             default:
                 sort = new QuickSort();
         }
+        if (sort == null) return;
         Date date = new Date();
         long startTime = date.getTime();
-        Collection<?> sortedArray = sort.resolve(Collections.singleton(arrayToSort));
+        int[] sortedArray = sort.resolveInt(arrayToSort);
         long endTime = date.getTime();
-        assertEquals(Collections.singleton(finalSortedArray), Collections.singleton(sortedArray));
+        assertTrue(Arrays.equals(finalSortedArray,sortedArray));
         logger.log(Level.INFO, "Time taken to sort the array: " + (endTime - startTime) + "ms");
     }
 }
