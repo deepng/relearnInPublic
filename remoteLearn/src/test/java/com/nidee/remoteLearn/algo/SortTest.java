@@ -1,7 +1,9 @@
 package com.nidee.remoteLearn.algo;
 
+import com.nidee.remoteLearn.sort.GPTQuickSort;
 import com.nidee.remoteLearn.sort.QuickSort;
 import com.nidee.remoteLearn.sort.Sort;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -16,8 +18,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class SortTest {
 
-    int[] arrayToSort = {5, 3, 8, 6, 2};
-    int[] finalSortedArray = {2, 3, 5, 6, 8};
+    int[] arrayToSort = {5, 6, 4, 2, 1, 3};
+    int[] finalSortedArray = {1, 2, 3, 4, 5, 6};
     Logger logger = Logger.getLogger(SortTest.class.getName());
 
     public static Stream<Arguments> envParams() {
@@ -40,12 +42,26 @@ public class SortTest {
                 // sort = new MergeSort();
                 break;
             case "quick":
-            default:
                 sort = new QuickSort();
+                break;
+            case "gpt-quick":
+            default:
+                sort = new GPTQuickSort();
         }
         if (sort == null) return;
         Date date = new Date();
         long startTime = date.getTime();
+        int[] sortedArray = sort.resolveInt(arrayToSort);
+        long endTime = date.getTime();
+        assertTrue(Arrays.equals(finalSortedArray,sortedArray));
+        logger.log(Level.INFO, "Time taken to sort the array: " + (endTime - startTime) + "ms");
+    }
+
+    @Test
+    public void testSortLargeIntArray(){
+        Date date = new Date();
+        long startTime = date.getTime();
+        Sort sort = new GPTQuickSort();
         int[] sortedArray = sort.resolveInt(arrayToSort);
         long endTime = date.getTime();
         assertTrue(Arrays.equals(finalSortedArray,sortedArray));

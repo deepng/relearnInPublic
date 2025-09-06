@@ -19,13 +19,31 @@ repositories {
 	mavenCentral()
 }
 
+def seleniumVersion = "4.11.0"
+def testngVersion = "7.8.0"
+
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-	testImplementation 'junit:junit:4.13.2'
+	testImplementation 'org.mockito:mockito-core:5.5.0'
+	testImplementation 'org.assertj:assertj-core:3.24.2'
+	implementation("org.seleniumhq.selenium:selenium-java:${seleniumVersion}")
+	// WebDriverManager to automatically manage browser drivers (highly recommended)
+	implementation("io.github.bonigarcia:webdrivermanager:5.5.3")
+	// Testing framework
+	testImplementation("org.testng:testng:${testngVersion}")
 }
 
 tasks.named('test') {
-	useJUnitPlatform()
+	useTestNG()
+}
+
+
+sourceSets {
+    test {
+        resources {
+            srcDir 'src/test/resources'
+        }
+    }
 }

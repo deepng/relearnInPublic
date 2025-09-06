@@ -1,7 +1,5 @@
 package com.nidee.remoteLearn.sort;
 
-import java.util.List;
-
 public class QuickSort implements Sort {
 
     @Override
@@ -31,7 +29,7 @@ public class QuickSort implements Sort {
             while (array[j] > pivot) {
                 j--;
             }
-            if(i < j) {
+            if(i < j && array[i] != array[j]) {
                 swap(array, i, j);
             }
         }
