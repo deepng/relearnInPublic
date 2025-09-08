@@ -37,9 +37,5 @@ public class QuickSort implements Sort {
         return pivot;
     }
 
-    private void swap(int[] array, int i, int j) {
-        int temp = array[i];
-        array[i] = array[j];
-        array[j] = temp;
-    }
+
 }
