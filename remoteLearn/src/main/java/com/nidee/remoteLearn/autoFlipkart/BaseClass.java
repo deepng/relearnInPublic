@@ -10,7 +10,12 @@ import org.openqa.selenium.firefox.FirefoxDriver;
  * Create common functions to navigate
  */
 public class BaseClass {
+    public WebDriver driver;
     public static final String FLIPKART_URL = "https://www.flipkart.com/";
+
+    BaseClass(WebDriver driver) {
+        this.driver = driver;
+    }
 
     public WebDriver setDriver(String browser) {
         WebDriver driver;
