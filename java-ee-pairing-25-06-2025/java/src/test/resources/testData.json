@@ -1,0 +1,7 @@
+{
+  "validUserId": "deepak@ee.com",
+  "invalidUserId": "ee@deepak.com",
+  "validPassword": "eedeepak",
+  "invalidPassword": "deepeeeak",
+  "baseUrl": "localhost:3000"
+}

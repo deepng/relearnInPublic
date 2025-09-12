@@ -1,0 +1,43 @@
+plugins {
+    id 'java'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.seleniumhq.selenium:selenium-java:4.27.0'
+    testImplementation 'io.rest-assured:rest-assured:5.5.0'
+    implementation 'io.github.bonigarcia:webdrivermanager:5.9.2'
+    testImplementation 'org.hamcrest:hamcrest:3.0'
+
+    def testngVersion = '7.8.0'
+    def jacksonVersion = '2.15.2'
+    def slf4jVersion = '2.0.7'
+    def logbackVersion = '1.4.11'
+    def log4jVersion = '2.20.0'
+    def freemarkerVersion = '2.3.32'
+    def cucumberVersion = '7.11.2'
+    def restAssuredVersion = '5.5.0'
+    testImplementation "org.testng:testng:$testngVersion"
+    testImplementation "com.fasterxml.jackson.core:jackson-databind:$jacksonVersion"
+    testImplementation "com.fasterxml.jackson.core:jackson-core:$jacksonVersion"
+    testImplementation "com.fasterxml.jackson.core:jackson-annotations:$jacksonVersion"
+    testImplementation "org.slf4j:slf4j-api:$slf4jVersion"
+//    testImplementation "ch.qos.logback:logback-classic:$logbackVersion"
+//    testImplementation "ch.qos.logback:logback-core:$logbackVersion"
+//    testImplementation "org.apache.logging.log4j:log4j-api:$log4jVersion"
+//    testImplementation "org.apache.logging.log4j:log4j-core:$log4jVersion"
+    testImplementation "org.freemarker:freemarker:$freemarkerVersion"
+    testImplementation "io.cucumber:cucumber-java:$cucumberVersion"
+    testImplementation "io.cucumber:cucumber-testng:$cucumberVersion"
+    testImplementation "io.rest-assured:rest-assured:$restAssuredVersion"
+    testImplementation "io.rest-assured:json-path:$restAssuredVersion"
+    testImplementation "io.rest-assured:xml-path:$restAssuredVersion"
+    testImplementation "io.rest-assured:json-schema-validator:$restAssuredVersion"
+}
+
+test {
+    useTestNG()
+}
