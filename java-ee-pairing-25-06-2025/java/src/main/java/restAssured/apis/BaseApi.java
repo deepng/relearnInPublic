@@ -1,11 +1,11 @@
-package RestAssured;
+package restAssured.apis;
 
 import io.restassured.response.Response;
-import org.openqa.selenium.devtools.v85.fetch.model.AuthChallengeResponse;
 
 public abstract class BaseApi {
     protected String baseUrl;
     protected String path;
+    protected String cookie;
 
     public String getPath() {
         return path;

@@ -1,8 +1,7 @@
 package gradle.testng.selenium;
 
-import RestAssured.CreateUserApi;
-import RestAssured.LoginApi;
-import RestAssured.models.Customer;
+import restAssured.apis.*;
+import restAssured.models.Customer;
 import helpers.Utils;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
@@ -15,6 +14,7 @@ import org.testng.ITestResult;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
+import restAssured.models.Products;
 import selenium.pageObjects.HomePage;
 import selenium.pageObjects.LoginPage;
 import selenium.pageObjects.ProductDialog;
@@ -55,7 +55,12 @@ public class JuiceTest extends BaseTest {
         return status.equalsIgnoreCase("success");
     }
 
-
+    /**
+     * Returns an empty string if we couldn't login
+     * @param user
+     * @param password
+     * @return
+     */
     public String loginAndCaptureCookie(String user, String password) {
         LoginApi loginApi = new LoginApi(baseUrl);
         return loginApi.loginAndGetStatus(user, password);
@@ -84,50 +89,67 @@ public class JuiceTest extends BaseTest {
                 "We might not have logged in successfully");
 
         // TODO Navigate to product and post review
-        String productToReview = testData.getOrDefault("productToReview", REVIEW_PRODUCT);
+        String productToReview = getProducToReview();
         WebElement productPage = homePage.openProduct(driver, productToReview);
         productPage.click();
-        String reviewComments = String.format("%s %s", Utils.getCurrentDateInFormat(Utils.DATE_FORMAT),
-                testData.getOrDefault("reviewComments", REVIEW_TEXT));
+        String reviewComments = getReviewComments();
         ProductDialog productDialog = new ProductDialog();
         Assert.assertTrue(productDialog.isVisible(driver), "We didn't open the product dialog for review");
         productDialog.addReviewComments(driver, reviewComments);
 
         // TODO Assert that the review has been created successfully
         productDialog.checkReviewsFor(driver, reviewComments, customer.getEmail());
-
-
     }
 
 
 
     // TODO Task3: Login and post a product review using the Juice Shop API
     @Test
-    void loginAndPostProductReviewViaApi() {
+    void loginAndPostProductReviewViaApiTest() {
         // Example HTTP request with assertions using Rest Assured. Can be removed.
-        String status = given()
-                .header("Content-Type", "application/json")
-                .when()
-                .get(baseUrl + "/rest/products/search")
-                .then()
-                .statusCode(200)
-                .body("status", equalTo("success") )
-                .body("data", hasItem(
-                        allOf(
-                                hasEntry("image", "apple_pressings.jpg"),
-                                hasEntry("name", "Apple Pomace")
-                        )
-                ))
-                .extract()
-                .path("status");
-
-        System.out.println(String.format("Status value is: %s", status));
+//        String status = given()
+//                .header("Content-Type", "application/json")
+//                .when()
+//                .get(baseUrl + "/rest/products/search")
+//                .then()
+//                .statusCode(200)
+//                .body("status", equalTo("success") )
+//                .body("data", hasItem(
+//                        allOf(
+//                                hasEntry("image", "apple_pressings.jpg"),
+//                                hasEntry("name", "Apple Pomace")
+//                        )
+//                ))
+//                .extract()
+//                .path("status");
+//
+//        logger.debug(String.format("Status value is: %s", status));
 
         // TODO Retrieve token via login API
-
+        String cookie = loginAndCaptureCookie(customer.getEmail(), customer.getPassword());
+        ProductListApi productListApi = new ProductListApi(baseUrl);
+        Products productList = productListApi.getProductList(cookie);
+        int productId = 38;
+        String productToReview = getProducToReview();
+        for (Products.Data datum : productList.getData()) {
+            if(datum.name.equalsIgnoreCase(productToReview))
+                productId = datum.id;
+        }
         // TODO Use token to post review to product
+        String reviewComments = getReviewComments();
+        ReviewProductApi reviewProductApi = new ReviewProductApi(baseUrl);
+        reviewProductApi.postReviewfor(cookie, productId, reviewComments, customer.getEmail());
 
         // TODO Assert that the product review has persisted
+    }
+
+    private String getReviewComments() {
+        return String.format("%s %s", Utils.getCurrentDateInFormat(Utils.DATE_FORMAT),
+                testData.getOrDefault("reviewComments", REVIEW_TEXT));
+    }
+
+    private String getProducToReview() {
+        return testData.getOrDefault("productToReview", REVIEW_PRODUCT);
     }
 
 

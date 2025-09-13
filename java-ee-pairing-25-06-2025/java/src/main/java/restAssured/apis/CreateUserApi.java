@@ -1,8 +1,8 @@
-package RestAssured;
+package restAssured.apis;
 
-import RestAssured.models.Customer;
-import RestAssured.models.NewUserModel;
-import RestAssured.models.SecurityQuestion;
+import restAssured.models.Customer;
+import restAssured.models.NewUserModel;
+import restAssured.models.SecurityQuestion;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import helpers.Utils;
 
@@ -14,6 +14,7 @@ public class CreateUserApi extends PostApi{
 
     public CreateUserApi(String baseUrl) {
         super(baseUrl);
+        setPath("/api/Users");
     }
 
     @Override
@@ -44,7 +45,7 @@ public class CreateUserApi extends PostApi{
         String status = given()
                 .header("Content-Type", "application/json")
                 .body(newUser)
-                .post(baseUrl + "/api/Users")
+                .post(baseUrl + path)
                 .then()
                 .extract()
                 .path("status");

@@ -1,0 +1,29 @@
+package restAssured.models;
+
+import java.util.ArrayList;
+
+
+public class Products {
+    public String status;
+    public ArrayList<Data> data;
+
+    public String getStatus() {
+        return status;
+    }
+
+    public ArrayList<Data> getData() {
+        return data;
+    }
+
+    public static class Data {
+        public int id;
+        public String name;
+        public String description;
+        public double price;
+        public double deluxePrice;
+        public String image;
+        public String createdAt;
+        public String updatedAt;
+        public Object deletedAt;
+    }
+}

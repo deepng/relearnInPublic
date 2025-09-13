@@ -1,9 +1,8 @@
-package RestAssured;
+package restAssured.apis;
 
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
-import io.restassured.specification.ResponseSpecification;
 
 import static io.restassured.RestAssured.given;
 

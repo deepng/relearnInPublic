@@ -1,4 +1,4 @@
-package RestAssured.models;
+package restAssured.models;
 
 import java.util.UUID;
 
