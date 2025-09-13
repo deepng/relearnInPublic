@@ -1,10 +1,11 @@
-package selenium;
+package selenium.pageObjects;
 
-import RestAssured.BaseApi;
 import dev.failsafe.internal.util.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import selenium.SeleniumTypes;
+import selenium.SeleniumUtils;
 
 import java.util.List;
 

@@ -1,8 +1,10 @@
-package selenium;
+package selenium.pageObjects;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import selenium.SeleniumCustomException;
+import selenium.SeleniumTypes;
+import selenium.SeleniumUtils;
 
 import java.util.HashMap;
 import java.util.Map;

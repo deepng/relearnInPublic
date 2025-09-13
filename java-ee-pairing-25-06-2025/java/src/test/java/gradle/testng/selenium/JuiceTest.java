@@ -15,9 +15,9 @@ import org.testng.ITestResult;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
-import selenium.HomePage;
-import selenium.LoginPage;
-import selenium.ProductDialog;
+import selenium.pageObjects.HomePage;
+import selenium.pageObjects.LoginPage;
+import selenium.pageObjects.ProductDialog;
 import selenium.SeleniumCustomException;
 
 import java.io.File;
