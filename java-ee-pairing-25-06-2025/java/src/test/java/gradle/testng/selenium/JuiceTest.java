@@ -1,5 +1,9 @@
 package gradle.testng.selenium;
 
+import RestAssured.CreateUserApi;
+import RestAssured.LoginApi;
+import RestAssured.models.Customer;
+import helpers.Utils;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.slf4j.Logger;
@@ -32,14 +36,24 @@ public class JuiceTest extends BaseTest {
 
 
     @BeforeClass
-    void setup() {
+    void setup() throws IOException {
         //TODO Task1: Add your credentials to customer i.e. email, password and security answer.
         customer = new Customer(testData.get("validUserId"), testData.get("validPassword"), testData.get("validUserSecurityAnswer"));
+        if (loginAndCaptureCookie(customer.getEmail(), customer.getPassword()).isEmpty())
+            Assert.assertTrue(createTestUser(), "We couldn't create a test user");
+    }
 
+    public boolean createTestUser() throws IOException {
+        CreateUserApi createUserApi = new CreateUserApi(baseUrl);
+        String status = createUserApi.createNewUser(customer);
+        return status.equalsIgnoreCase("success");
     }
 
 
-
+    public String loginAndCaptureCookie(String user, String password) {
+        LoginApi loginApi = new LoginApi(baseUrl);
+        return loginApi.loginAndGetStatus(user, password);
+    }
 
     //TODO Task2: Login and post a product review using Selenium
     @Test
@@ -54,7 +68,7 @@ public class JuiceTest extends BaseTest {
         loginPage.closeWelcomePopup(driver);
         Thread.sleep(2000);
         loginPage.login(driver, customer.getEmail(), customer.getPassword());
-
+        logger.debug("We have logged in with user: {}", customer.getEmail());
         Thread.sleep(2000);
         homePage = new HomePage();
 //        emailField.sendKeys(testData.get("validEmail"));
@@ -107,7 +121,7 @@ public class JuiceTest extends BaseTest {
         if(ITestResult.FAILURE == testResult.getStatus()) {
             File screenshot = ((TakesScreenshot) this.driver).getScreenshotAs(OutputType.FILE);
             java.nio.file.Files.copy(screenshot.toPath(), java.nio.file.Paths.get("screenshots",
-                    String.format("failed-test-screenshot-%d.png", System.currentTimeMillis())));
+                    String.format("failed-test-screenshot-%s.png", Utils.getCurrentDateInFormat(Utils.SCREENSHOT_FORMAT))));
         }
     }
 }

@@ -1,4 +1,4 @@
-package gradle.testng.selenium;
+package RestAssured.models;
 
 import java.util.UUID;
 
@@ -9,7 +9,7 @@ public class Customer {
     private String securityAnswer;
     private String token;
 
-    Customer(String email, String password, String securityAnswer) {
+    public Customer(String email, String password, String securityAnswer) {
         this.email = email;
         this.password = password;
         this.securityAnswer = securityAnswer;

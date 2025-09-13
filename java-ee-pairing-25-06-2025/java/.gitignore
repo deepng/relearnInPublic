@@ -23,5 +23,10 @@ hs_err_pid*
 /build/
 /.idea/
 /.gradle/
+/.vscode/
 
 .DS_Store
+
+#folders
+screenshots
+reports

@@ -7,7 +7,7 @@ import org.openqa.selenium.WebElement;
 import java.util.HashMap;
 import java.util.Map;
 
-public class BasePage {
+public abstract class BasePage {
 
     public void closeWelcomePopup(WebDriver driver) throws SeleniumCustomException {
         Map<SeleniumTypes, String> findBy = new HashMap<>();

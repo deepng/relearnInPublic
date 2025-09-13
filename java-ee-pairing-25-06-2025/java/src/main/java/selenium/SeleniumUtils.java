@@ -1,6 +1,8 @@
 package selenium;
 
 import org.openqa.selenium.*;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,26 +36,7 @@ public class SeleniumUtils {
      * @throws SeleniumCustomException
      */
     public static WebElement findElementWithOptions(Map<SeleniumTypes, String> findBy, WebDriver driver) throws SeleniumCustomException {
-        WebElement webElement = null;
-        Iterator<SeleniumTypes> findByIterator = findBy.keySet().iterator();
-        while(findByIterator.hasNext()) {
-            SeleniumTypes key = findByIterator.next();
-            String value = findBy.get(key);
-            if(value != null && !value.isEmpty()) {
-                try {
-                    webElement = findElementForTypeValue(key, value, driver);
-                    if (webElement != null)
-                        break;
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    log.error(e.getMessage());
-                    if (!findByIterator.hasNext())
-                        throw new SeleniumCustomException("Element not found with any of the provided locators. " +
-                                "Last tried with " + key + " : " + value);
-                }
-            }
-        }
-        return webElement;
+        return findElementWithOptions(findBy, driver, "Element not found with any of the provided locators." );
     }
 
     public static WebElement findElementForTypeValue(SeleniumTypes key, String value, WebDriver driver) {
@@ -81,5 +64,54 @@ public class SeleniumUtils {
             default:
                 throw new IllegalArgumentException("Invalid locator type: " + key);
         }
+    }
+
+    public static WebElement findElementWithOptions(Map<SeleniumTypes,
+            String> findBy, WebDriver driver, String errorMessage) throws SeleniumCustomException {
+        WebElement webElement = null;
+        Iterator<SeleniumTypes> findByIterator = findBy.keySet().iterator();
+        while(findByIterator.hasNext()) {
+            SeleniumTypes key = findByIterator.next();
+            String value = findBy.get(key);
+            if(value != null && !value.isEmpty()) {
+                try {
+                    webElement = findElementForTypeValue(key, value, driver);
+                    if (webElement != null)
+                        break;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    log.error(e.getMessage());
+                    if (!findByIterator.hasNext())
+                        throw new SeleniumCustomException(errorMessage);
+                }
+            }
+        }
+        return webElement;
+    }
+
+
+    public static WebElement waitUntilElementIsClickable(WebDriverWait wait, By by) throws SeleniumCustomException {
+        return waitUntilElementIsClickable(wait, by, String.format("Element %s wasn't clickable after wait", by.toString()));
+    }
+
+
+    public static WebElement waitUntilElementIsClickable(WebDriverWait wait, By by, String errorMessage) throws SeleniumCustomException {
+        try {
+            return wait.until(ExpectedConditions.elementToBeClickable(by));
+        } catch (Exception e) {
+            throw new SeleniumCustomException(errorMessage, e);
+        }
+    }
+
+    public static WebElement waitForElementToBeVisible(WebDriverWait wait, By by, String errorMessage) throws SeleniumCustomException {
+        try {
+            return wait.until(ExpectedConditions.visibilityOfElementLocated(by));
+        } catch (Exception e) {
+            throw new SeleniumCustomException(errorMessage, e);
+        }
+    }
+
+    public static WebElement waitForElementToBeVisible(WebDriverWait wait, By by) throws SeleniumCustomException {
+        return waitForElementToBeVisible(wait, by, String.format("The element %s wasn't visible even after waiting", by.toString()));
     }
 }

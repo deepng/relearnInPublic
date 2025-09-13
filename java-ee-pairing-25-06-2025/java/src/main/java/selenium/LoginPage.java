@@ -3,14 +3,20 @@ package selenium;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 
 public class LoginPage extends BasePage {
 
-    public void login(WebDriver driver, String username, String password) throws SeleniumCustomException {
 
+    public void login(WebDriver driver, String username, String password) throws SeleniumCustomException, InterruptedException {
+
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         // Login with credentials
 //        WebElement emailField = driver.findElement(By.name("email"));
 //        WebElement passwordField = driver.findElement(By.name("password"));
@@ -33,13 +39,13 @@ public class LoginPage extends BasePage {
         findBy.put(SeleniumTypes.ID, "loginButton");
         WebElement loginButton = SeleniumUtils.findElementWithOptions(findBy, driver);
         loginButton.click();
+        Thread.sleep(2000);
 
         findBy.clear();
-        findBy.put(SeleniumTypes.XPATH, "//a[@routerlink='/forgot-password']");
-        WebElement forgotPasswordLink = SeleniumUtils.findElementWithOptions(findBy, driver);
-        if (forgotPasswordLink.isDisplayed()) {
-            throw new SeleniumCustomException("Login might have failed, We are still in the login page");
-        }
+        WebElement basket = SeleniumUtils.waitForElementToBeVisible(wait,
+                By.xpath("//button[@routerlink='/basket']"),
+                "Login might have failed, We are still in the login page");
+
     }
 
     public WebElement getLoginPageHeader(WebDriver driver) {
