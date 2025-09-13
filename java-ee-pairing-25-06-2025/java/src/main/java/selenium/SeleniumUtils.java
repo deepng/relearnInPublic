@@ -1,11 +1,13 @@
 package selenium;
 
 import org.openqa.selenium.*;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.time.Duration;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -23,6 +25,22 @@ public class SeleniumUtils {
     
     public static void scrollToTop(WebDriver driver) {
         ((JavascriptExecutor) driver).executeScript("window.scrollTo(0, 0);");
+    }
+
+    public static void scrollToBottom(WebDriver driver) {
+        ((JavascriptExecutor) driver).executeScript("window.scrollTo(0, document.body.scrollHeight);");
+    }
+
+    public static void scrollDownUsingPageDown(WebDriver driver) {
+        Actions actions = new Actions(driver);
+        actions.sendKeys(Keys.PAGE_DOWN).build().perform();
+    }
+
+    public static void scrollToTheElement(WebDriver driver, By element) {
+        WebElement webElement = driver.findElement(element);
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", webElement);
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        wait.until(ExpectedConditions.elementToBeClickable(element));
     }
 
     /**
@@ -113,5 +131,13 @@ public class SeleniumUtils {
 
     public static WebElement waitForElementToBeVisible(WebDriverWait wait, By by) throws SeleniumCustomException {
         return waitForElementToBeVisible(wait, by, String.format("The element %s wasn't visible even after waiting", by.toString()));
+    }
+
+    public static WebElement findElementWithoutExceptions(WebDriver driver, By nextPage) {
+        try {
+            return driver.findElement(nextPage);
+        } catch (NoSuchElementException e) {
+            return null;
+        }
     }
 }

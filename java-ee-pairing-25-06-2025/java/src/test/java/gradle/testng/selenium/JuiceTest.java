@@ -6,6 +6,7 @@ import RestAssured.models.Customer;
 import helpers.Utils;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
+import org.openqa.selenium.WebElement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.Assert;
@@ -16,6 +17,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import selenium.HomePage;
 import selenium.LoginPage;
+import selenium.ProductDialog;
 import selenium.SeleniumCustomException;
 
 import java.io.File;
@@ -25,9 +27,13 @@ import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.*;
 
 public class JuiceTest extends BaseTest {
+    private static final String REVIEW_PRODUCT =  "OWASP Juice Shop T-Shirt"; // "OWASP Juice Shop \"King of the Hill\" Facemask";
+    private static final String REVIEW_TEXT = "This is a Test Review with 1-10 and #$!%^@";
+
     private static String address = "localhost";
     private static String port = "3000";
     private static String baseUrl = String.format("http://%s:%s", address, port);
+
     Logger logger = LoggerFactory.getLogger(JuiceTest.class);
 
     public Customer customer;
@@ -78,8 +84,18 @@ public class JuiceTest extends BaseTest {
                 "We might not have logged in successfully");
 
         // TODO Navigate to product and post review
+        String productToReview = testData.getOrDefault("productToReview", REVIEW_PRODUCT);
+        WebElement productPage = homePage.openProduct(driver, productToReview);
+        productPage.click();
+        String reviewComments = String.format("%s %s", Utils.getCurrentDateInFormat(Utils.DATE_FORMAT),
+                testData.getOrDefault("reviewComments", REVIEW_TEXT));
+        ProductDialog productDialog = new ProductDialog();
+        Assert.assertTrue(productDialog.isVisible(driver), "We didn't open the product dialog for review");
+        productDialog.addReviewComments(driver, reviewComments);
 
         // TODO Assert that the review has been created successfully
+        productDialog.checkReviewsFor(driver, reviewComments, customer.getEmail());
+
 
     }
 
