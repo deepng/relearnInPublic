@@ -1,8 +1,10 @@
 package restAssured.models;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import java.util.ArrayList;
 
-
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Products {
     public String status;
     public ArrayList<Data> data;

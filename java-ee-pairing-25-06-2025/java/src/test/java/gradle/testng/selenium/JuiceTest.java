@@ -1,7 +1,5 @@
 package gradle.testng.selenium;
 
-import restAssured.apis.*;
-import restAssured.models.Customer;
 import helpers.Utils;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
@@ -14,17 +12,19 @@ import org.testng.ITestResult;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
+import restAssured.apis.CreateUserApi;
+import restAssured.apis.LoginApi;
+import restAssured.apis.ProductListApi;
+import restAssured.apis.ReviewProductApi;
+import restAssured.models.Customer;
 import restAssured.models.Products;
+import selenium.SeleniumCustomException;
 import selenium.pageObjects.HomePage;
 import selenium.pageObjects.LoginPage;
 import selenium.pageObjects.ProductDialog;
-import selenium.SeleniumCustomException;
 
 import java.io.File;
 import java.io.IOException;
-
-import static io.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.*;
 
 public class JuiceTest extends BaseTest {
     private static final String REVIEW_PRODUCT =  "OWASP Juice Shop T-Shirt"; // "OWASP Juice Shop \"King of the Hill\" Facemask";
@@ -69,6 +69,7 @@ public class JuiceTest extends BaseTest {
     //TODO Task2: Login and post a product review using Selenium
     @Test
     void loginAndPostProductReviewViaUiTest(ITestContext testContext) throws InterruptedException, SeleniumCustomException {
+        setUpDriver();
 //        driver.get(baseUrl + "/#/login");
         loginPage = new LoginPage();
         loginPage.loadLoginPage(driver, baseUrl);
@@ -132,8 +133,10 @@ public class JuiceTest extends BaseTest {
         int productId = 38;
         String productToReview = getProducToReview();
         for (Products.Data datum : productList.getData()) {
-            if(datum.name.equalsIgnoreCase(productToReview))
+            if(datum.name.equalsIgnoreCase(productToReview)) {
                 productId = datum.id;
+                break;
+            }
         }
         // TODO Use token to post review to product
         String reviewComments = getReviewComments();

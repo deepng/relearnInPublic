@@ -5,6 +5,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeSuite;
+import org.testng.annotations.DataProvider;
 
 import java.time.Duration;
 import java.util.*;
@@ -32,8 +33,8 @@ public abstract class BaseTest {
     @BeforeSuite
     public void setUp() {
         setUpTestData();
-        setUpDriver();
     }
+
 
     public void setUpDriver() {
         WebDriverManager.chromedriver().setup();

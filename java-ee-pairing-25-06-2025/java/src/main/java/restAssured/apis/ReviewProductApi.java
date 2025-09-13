@@ -1,6 +1,7 @@
 package restAssured.apis;
 
 import groovyjarjarantlr4.v4.runtime.misc.NotNull;
+import io.restassured.response.Response;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
@@ -37,6 +38,7 @@ public class ReviewProductApi extends PostApi {
         this.cookie = cookie;
         buildBody();
         setHeaders();
+        Response response = execute();
         given().spec(requestSpecBuilder.build())
                 .post(baseUrl + String.format(path, productId))
                 .then()

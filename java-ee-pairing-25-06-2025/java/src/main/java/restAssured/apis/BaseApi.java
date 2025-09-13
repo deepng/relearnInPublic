@@ -18,6 +18,4 @@ public abstract class BaseApi {
     BaseApi(String baseUrl) {
         this.baseUrl = baseUrl;
     }
-
-    protected abstract Response execute();
 }

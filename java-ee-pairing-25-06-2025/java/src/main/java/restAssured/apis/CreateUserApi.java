@@ -42,15 +42,13 @@ public class CreateUserApi extends PostApi{
         newUser.setSecurityQuestion(securityQuestion);
         newUser.setSecurityAnswer(customer.getSecurityAnswer());
 
-        String status = given()
+        return given()
                 .header("Content-Type", "application/json")
                 .body(newUser)
                 .post(baseUrl + path)
                 .then()
                 .extract()
                 .path("status");
-
-        return status;
     }
 
 

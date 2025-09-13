@@ -1,10 +1,6 @@
 package restAssured.apis;
 
-import org.openqa.selenium.Cookie;
 import restAssured.models.Products;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static io.restassured.RestAssured.given;
 
