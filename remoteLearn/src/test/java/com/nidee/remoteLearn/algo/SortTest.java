@@ -1,9 +1,11 @@
 package com.nidee.remoteLearn.algo;
 
 import com.nidee.remoteLearn.algoProblems.SumProblems;
+import com.nidee.remoteLearn.sort.BubbleSort;
 import com.nidee.remoteLearn.sort.GPTQuickSort;
 import com.nidee.remoteLearn.sort.SelectionSort;
 import com.nidee.remoteLearn.sort.Sort;
+import org.springframework.util.Assert;
 import org.testng.annotations.Test;
 
 import java.util.Arrays;
@@ -73,6 +75,19 @@ public class SortTest {
         int[] sortedArray = sort.resolveInt(arrayToSort);
         long endTime = date.getTime();
         assert(Arrays.equals(finalSortedArray,sortedArray));
+        logger.log(Level.INFO, "Time taken to sort the array: " + (endTime - startTime) + "ms");
+    }
+
+    @Test
+    public void testBubbleSort() {
+        Date date = new Date();
+        long startTime = date.getTime();
+        Sort sort = new BubbleSort();
+        int[] sortedArray = sort.resolveInt(arrayToSort);
+        long endTime = date.getTime();
+        Assert.isTrue(Arrays.equals(finalSortedArray,sortedArray),
+                String.format("We expected %s but got %s", Arrays.toString(finalSortedArray),
+                        Arrays.toString(sortedArray)));
         logger.log(Level.INFO, "Time taken to sort the array: " + (endTime - startTime) + "ms");
     }
 

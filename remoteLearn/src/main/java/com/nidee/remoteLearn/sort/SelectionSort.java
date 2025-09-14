@@ -2,6 +2,11 @@ package com.nidee.remoteLearn.sort;
 
 import java.util.ArrayList;
 
+/**
+ * Moves from left to right. Selecting the smallest element and placing it in the
+ * leftmost index. Since we select and replace we call this selection sort.
+ * This is following decrease and conquer strategy and takes O(n^2) time
+ */
 public class SelectionSort implements Sort {
     @Override
     public int[] resolveInt(int[] collection) {
@@ -18,29 +23,6 @@ public class SelectionSort implements Sort {
             swap(arr, i, min);
         }
         return arr;
-    }
-
-
-    static ArrayList<Integer> selection_sort(ArrayList<Integer> arr) {
-        // Write your code here.
-        int pivot = (arr.size() - 1)/2;
-        sort(arr, 0, pivot);
-        sort(arr, pivot+1, arr.size());
-        return arr;
-    }
-
-    static void sort(ArrayList<Integer> arr, int i ,int j) {
-        int pivot = (j-i)/2;
-        while(i < j) {
-            while(arr.get(i) < arr.get(pivot))
-                i++;
-            while(arr.get(j) > arr.get(pivot))
-                j--;
-
-            if(i<j)
-                swapSort(arr, i, j);
-
-        }
     }
 
     static void swapSort(ArrayList<Integer> arr, int i, int j) {

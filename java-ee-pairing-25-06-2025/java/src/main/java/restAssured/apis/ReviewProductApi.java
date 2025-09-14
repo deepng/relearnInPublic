@@ -11,9 +11,8 @@ public class ReviewProductApi extends PostApi {
     String userId;
     String review;
 
-    public ReviewProductApi(String baseUrl) {
+    public ReviewProductApi(@NotNull String baseUrl) {
         super(baseUrl);
-        setPath("/rest/products/%s/reviews");
     }
 
     @Override
@@ -29,20 +28,25 @@ public class ReviewProductApi extends PostApi {
         requestSpecBuilder.addHeader("Authorization", "Bearer " + cookie);
     }
 
-    public void postReviewfor(@NotNull String cookie,
-                              @NotNull int productId,
-                              @NotNull String review,
-                              @NotNull String userId) {
+    public void putReviewFor(@NotNull String cookie,
+                             @NotNull int productId,
+                             @NotNull String review,
+                             @NotNull String userId) {
         this.review = review;
         this.userId = userId;
         this.cookie = cookie;
         buildBody();
         setHeaders();
-        Response response = execute();
-        given().spec(requestSpecBuilder.build())
-                .post(baseUrl + String.format(path, productId))
-                .then()
-                .statusCode(200)
-                .body("status", equalTo("success"));
+        requestSpecBuilder.setBaseUri(baseUrl);
+        setPath(String.format("/rest/products/%s/reviews", productId));
+        requestSpecBuilder.setBasePath(path);
+
+        Response response = given().spec(requestSpecBuilder.build())
+                .put(baseUrl + String.format(path, productId));
+
+        response.then()
+        .statusCode(201) // This is the given statusCode in the response
+        .body("staus", equalTo("success")); // There is a typo for status in the API response
+
     }
 }

@@ -25,7 +25,7 @@ public class BaseTest {
 
     @BeforeSuite
     public void suiteSetup() throws CustomException {
-        BaseClass baseClass = new BaseClass();
+        BaseClass baseClass = new BaseClass(driver);
 //        readTestProperties(); // Setup the browser from properties file
         if(browser.equalsIgnoreCase("firefox")) {
             driver = baseClass.setDriver("firefox");

@@ -12,10 +12,7 @@ import org.testng.ITestResult;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
-import restAssured.apis.CreateUserApi;
-import restAssured.apis.LoginApi;
-import restAssured.apis.ProductListApi;
-import restAssured.apis.ReviewProductApi;
+import restAssured.apis.*;
 import restAssured.models.Customer;
 import restAssured.models.Products;
 import selenium.SeleniumCustomException;
@@ -90,7 +87,7 @@ public class JuiceTest extends BaseTest {
                 "We might not have logged in successfully");
 
         // TODO Navigate to product and post review
-        String productToReview = getProducToReview();
+        String productToReview = getTheProductToReview();
         WebElement productPage = homePage.openProduct(driver, productToReview);
         productPage.click();
         String reviewComments = getReviewComments();
@@ -131,7 +128,7 @@ public class JuiceTest extends BaseTest {
         ProductListApi productListApi = new ProductListApi(baseUrl);
         Products productList = productListApi.getProductList(cookie);
         int productId = 38;
-        String productToReview = getProducToReview();
+        String productToReview = getTheProductToReview();
         for (Products.Data datum : productList.getData()) {
             if(datum.name.equalsIgnoreCase(productToReview)) {
                 productId = datum.id;
@@ -141,9 +138,11 @@ public class JuiceTest extends BaseTest {
         // TODO Use token to post review to product
         String reviewComments = getReviewComments();
         ReviewProductApi reviewProductApi = new ReviewProductApi(baseUrl);
-        reviewProductApi.postReviewfor(cookie, productId, reviewComments, customer.getEmail());
-
+        reviewProductApi.putReviewFor(cookie, productId, reviewComments, customer.getEmail());
         // TODO Assert that the product review has persisted
+        CheckProductReviewApi checkProductReviewApi = new CheckProductReviewApi(baseUrl);
+        Assert.assertTrue(checkProductReviewApi.validateThisProductReview(cookie, productId, reviewComments, customer.getEmail()),
+                String.format("We reviewed product %s, but didn't find the review comments %s", productToReview, reviewComments));
     }
 
     private String getReviewComments() {
@@ -151,7 +150,7 @@ public class JuiceTest extends BaseTest {
                 testData.getOrDefault("reviewComments", REVIEW_TEXT));
     }
 
-    private String getProducToReview() {
+    private String getTheProductToReview() {
         return testData.getOrDefault("productToReview", REVIEW_PRODUCT);
     }
 
@@ -159,7 +158,7 @@ public class JuiceTest extends BaseTest {
     @AfterMethod
     public void takeScreenshotsWhenFailure(ITestResult testResult) throws IOException {
         // Take screenshot if test failed
-        if(ITestResult.FAILURE == testResult.getStatus()) {
+        if(driver != null && ITestResult.FAILURE == testResult.getStatus()) {
             File screenshot = ((TakesScreenshot) this.driver).getScreenshotAs(OutputType.FILE);
             java.nio.file.Files.copy(screenshot.toPath(), java.nio.file.Paths.get("screenshots",
                     String.format("failed-test-screenshot-%s.png", Utils.getCurrentDateInFormat(Utils.SCREENSHOT_FORMAT))));
