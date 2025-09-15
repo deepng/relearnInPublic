@@ -4,9 +4,11 @@ import dev.failsafe.internal.util.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import selenium.SeleniumTypes;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import selenium.SeleniumCustomException;
 import selenium.SeleniumUtils;
 
+import java.time.Duration;
 import java.util.List;
 
 public class ProductDialog extends BasePage {
@@ -24,13 +26,16 @@ public class ProductDialog extends BasePage {
         submitButton.click();
     }
 
-    public boolean isVisible(WebDriver driver) {
+    public boolean isVisible(WebDriver driver) throws SeleniumCustomException {
         WebElement dialogBox = getDialogBox(driver);
         return dialogBox.isDisplayed();
     }
 
-    public WebElement getDialogBox(WebDriver driver) {
-        return SeleniumUtils.findElementForTypeValue(SeleniumTypes.TAG_NAME,"mat-dialog-container", driver);
+    public WebElement getDialogBox(WebDriver driver) throws SeleniumCustomException {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(2));
+        return SeleniumUtils.waitForElementToBeVisible(wait, By.tagName("mat-dialog-container"),
+                "We didn't get the Product dialog container");
+//        return SeleniumUtils.findElementForTypeValue(SeleniumTypes.TAG_NAME,"mat-dialog-container", driver);
     }
 
     public void checkReviewsFor(WebDriver driver, String reviewComments, String userEmail) {
@@ -51,7 +56,8 @@ public class ProductDialog extends BasePage {
                 }
             }
             Assert.isTrue(false,
-                    "We didn't find the current users review or the in the given review comments - " + reviewComments);
+                    String.format("We didn't find the current users review or the in " +
+                            "the given review comments - %s" , reviewComments));
         } else {
             Assert.isTrue(false,
                     String.format("We were expecting %s reviews, but got %d reviews", reviewCount, reviewText.size()));

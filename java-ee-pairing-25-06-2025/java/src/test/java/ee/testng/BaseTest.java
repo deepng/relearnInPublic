@@ -1,15 +1,20 @@
-package gradle.testng.selenium;
+package ee.testng;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
+import listeners.TestReporter;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeSuite;
-import org.testng.annotations.DataProvider;
+import org.testng.annotations.Listeners;
 
 import java.time.Duration;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Properties;
+import java.util.ResourceBundle;
 
+@Listeners({TestReporter.class})
 public abstract class BaseTest {
 
     public WebDriver driver;

@@ -27,6 +27,7 @@ dependencies {
     testImplementation "com.fasterxml.jackson.core:jackson-core:$jacksonVersion"
     testImplementation "com.fasterxml.jackson.core:jackson-annotations:$jacksonVersion"
     testImplementation "org.slf4j:slf4j-api:$slf4jVersion"
+    implementation("org.apache.logging.log4j:log4j-slf4j-impl:$log4jVersion")
 //    testImplementation "ch.qos.logback:logback-classic:$logbackVersion"
 //    testImplementation "ch.qos.logback:logback-core:$logbackVersion"
 //    testImplementation "org.apache.logging.log4j:log4j-api:$log4jVersion"

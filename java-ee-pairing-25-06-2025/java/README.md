@@ -20,7 +20,7 @@ Open your web browser and navigate to http://localhost:3000 to ensure the Juice 
 Please manually register a user in JuiceShop application. We will use this to write our tests against.
 
 ### Run the tests
-- Run `gradle wrapper` from the project root.
+- Run `ee wrapper` from the project root.
 - Rn the test with `./gradlew test` from the project root.
 
 ### Things we expect to see during our technical discussion

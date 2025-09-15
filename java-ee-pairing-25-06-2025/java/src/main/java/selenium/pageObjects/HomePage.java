@@ -24,7 +24,7 @@ public class HomePage {
         WebElement wantInElement = SeleniumUtils.findElementWithoutExceptions(driver,
                 By.xpath("//a[normalize-space()='"+ meWantIT +"']"));
 //                By.xpath("//*[text()='"+meWantIT+"']"));
-        if(wantInElement != null)
+        if(wantInElement != null && wantInElement.isDisplayed())
             wantInElement.click();
     }
 

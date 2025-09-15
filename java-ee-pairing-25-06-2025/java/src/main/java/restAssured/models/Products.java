@@ -27,5 +27,17 @@ public class Products {
         public String createdAt;
         public String updatedAt;
         public Object deletedAt;
+
+        public int getId() {
+            return id;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public String getDescription() {
+            return description;
+        }
     }
 }

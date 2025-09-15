@@ -1,6 +1,7 @@
-package gradle.testng.selenium;
+package ee.testng;
 
 import io.cucumber.testng.CucumberOptions;
+import org.testng.annotations.Test;
 
 @CucumberOptions(
         features = "src/test/resources/features",
@@ -9,8 +10,9 @@ import io.cucumber.testng.CucumberOptions;
         monochrome = true,
         tags = "@test"
 )
-public class TestRunner {
+public class TestRunner extends BaseTest {
 
+    @Test
     public void runTests() {
         System.out.println("Running tests...");
     }

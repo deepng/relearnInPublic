@@ -1,4 +1,4 @@
-package gradle.testng.selenium;
+package ee.testng;
 
 import helpers.Utils;
 import org.openqa.selenium.OutputType;
@@ -22,10 +22,13 @@ import selenium.pageObjects.ProductDialog;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Random;
 
 public class JuiceTest extends BaseTest {
-    private static final String REVIEW_PRODUCT =  "OWASP Juice Shop T-Shirt"; // "OWASP Juice Shop \"King of the Hill\" Facemask";
-    private static final String REVIEW_TEXT = "This is a Test Review with 1-10 and #$!%^@";
+    private static final String REVIEW_PRODUCT =  "Quince Juice (1000ml)";
+    // OWASP Juice Shop Iron-Ons (16pcs)"; // ""OWASP Juice Shop T-Shirt"; // "OWASP Juice Shop \"King of the Hill\" Facemask";
+    private static final String REVIEW_TEXT = "This is a Test Review with 1-10 and #$!%%^@";
 
     private static String address = "localhost";
     private static String port = "3000";
@@ -37,13 +40,18 @@ public class JuiceTest extends BaseTest {
     public LoginPage loginPage;
     public HomePage homePage;
 
+    public String cookie;
 
     @BeforeClass
     void setup() throws IOException {
         //TODO Task1: Add your credentials to customer i.e. email, password and security answer.
-        customer = new Customer(testData.get("validUserId"), testData.get("validPassword"), testData.get("validUserSecurityAnswer"));
-        if (loginAndCaptureCookie(customer.getEmail(), customer.getPassword()).isEmpty())
+        customer = new Customer(testData.get("validUserId"), testData.get("validPassword"),
+                testData.get("validUserSecurityAnswer"));
+        cookie = loginAndCaptureCookie(customer.getEmail(), customer.getPassword());
+        if (cookie.isEmpty()) {
             Assert.assertTrue(createTestUser(), "We couldn't create a test user");
+            cookie = loginAndCaptureCookie(customer.getEmail(), customer.getPassword());
+        }
     }
 
     public boolean createTestUser() throws IOException {
@@ -88,6 +96,8 @@ public class JuiceTest extends BaseTest {
 
         // TODO Navigate to product and post review
         String productToReview = getTheProductToReview();
+        logger.info("Let's review {}", productToReview);
+        System.out.println("reviewing " + productToReview);
         WebElement productPage = homePage.openProduct(driver, productToReview);
         productPage.click();
         String reviewComments = getReviewComments();
@@ -124,9 +134,9 @@ public class JuiceTest extends BaseTest {
 //        logger.debug(String.format("Status value is: %s", status));
 
         // TODO Retrieve token via login API
-        String cookie = loginAndCaptureCookie(customer.getEmail(), customer.getPassword());
-        ProductListApi productListApi = new ProductListApi(baseUrl);
-        Products productList = productListApi.getProductList(cookie);
+        cookie = loginAndCaptureCookie(customer.getEmail(), customer.getPassword());
+
+        Products productList = getProductsList(cookie);
         int productId = 38;
         String productToReview = getTheProductToReview();
         for (Products.Data datum : productList.getData()) {
@@ -151,7 +161,20 @@ public class JuiceTest extends BaseTest {
     }
 
     private String getTheProductToReview() {
+        if(cookie != null && !cookie.isEmpty()) {
+            Products productsList = getProductsList(cookie);
+            ArrayList<Products.Data> productListData = productsList.getData();
+            Random random = new Random();
+            int randomIndex = random.nextInt(productListData.size());
+            Products.Data randomProduct = productListData.get(randomIndex);
+            return randomProduct.getName();
+        }
         return testData.getOrDefault("productToReview", REVIEW_PRODUCT);
+    }
+
+    private Products getProductsList(String cookie) {
+        ProductListApi productListApi = new ProductListApi(baseUrl);
+        return productListApi.getProductList(cookie);
     }
 
 
