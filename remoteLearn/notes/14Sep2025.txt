@@ -1,0 +1,122 @@
+Interview Kickstart 14th Sep
+
+Given the book Julius and Caesar
+Say arrays represent the pages where the words
+Brutus, Caesar, Helena, Thy and Thou are present.
+
+Now find pages which have
+
+Brutus and Caesar
+
+Caesar Or Helena
+
+Brutus and Caesar or Helena and Thy or Thou
+
+
+n - L1 - 1, 3, 5, 6, 13, 31, 37, 53, 55, 61
+m - L2 - 1, 2, 3, 7, 15, 33, 37, 53, 57, 63
+
+
+
+L1 and L2
+Brutus "And" Caesar
+Given a sorted list, give the common 
+
+Have 2 pointers which will compare the elements in the 2 lists after putting them in a SET 
+to remove the duplicates
+Compare and Move the smaller pointer. This takes O(n+m)
+While(p1 < l1.size() && p2 < l2.size())
+if (p1 == p2) {
+  l3.add(p1)
+  p1++;
+  p2++;
+} if (p1 < p2) {
+	p1++;
+} else {
+	p2++;
+}
+}
+
+
+ 
+or we can do binary search of L1 items in L2. look for a smaller list to run through. This time complexity is O(nlogn)
+
+
+
+
+O(N) + O(M)
+
+HashMap for O(1) search
+
+Sorted means we should have some sort of pointer based check or Binary search based implementation
+
+
+
+L1 OR L2
+
+do the merge from mergeSort
+
+l3
+While(p1 < l1.size() && p2 < l2.size()) {
+ if(p1 < p2) {
+	l3.add(p1);
+	p1++;
+} else if(p1>p2) {
+	l3.add(p2);
+	p2++
+} else {
+	l3.add(p2):
+	p1++;
+	p2++;
+}
+while(p1 < l1.size())
+	l3.add(p1)
+while(p2 < l2.size())
+	l3.add(p2)
+====================================
+
+Given an array of integers, find the kth largest integer
+
+arr = [5, 4, 1, 7, 3, 2]
+K = 3
+o/p = 4
+Do the "decrease and conquer" if K is much smaller than N. Then we can get the output in O(K*N) time.
+
+if K is as big as N we can sort the array (n-k)th index. Then the time complexity is O(n(logn)). Sorting takes 
+O(logn) space. There is an implicit stack space.
+
+OR we can use HEAP
+
+Heap -> Is an array which maintains a specific order of elements.
+- Maximum Heap - Parent element should be larger than children. Children will be sitting on indexes which are calculated based on formulat
+- Min Heap - Parent elemtn should be smaller than children. 
+
+
+Building a Heap takes O(N) and should be a 1 time effort.
+Heapify is a correction, which happens everytime we modify the heap. Hence this takes O(LogN) time.
+
+
+Adding the top K numbers to a minHeap of size(K), so usually the smallest number will be coming to the front
+
+
+OR 
+
+We can get a PIVOT number which can land on N-Kth spot of the array and that would be our answer. We shuld arrange the numbers (NOT Sort) around a PIVOT and see if the PIVOT falls on N-Kth index. If not we see if the PIVOT is on the right or the left of the pivot and now we get a smaller set of values to find the Kth largest number.
+
+This is logic for QUICK SELECT. This gives result from O(N) to O(N^2) order time.
+1. Choose a pivot randomly
+2. Partition around the chosen pivot
+ (Huruto's or Hoare's technique to find the pivot)
+3. Use Lumuto's partitioning using two pointers where pointer 1 will be less than Pivot, and pointer 2 will be for greater than Pivot.
+
+
+function kthLargest(arr, k) {
+	index = arr.size() - k;
+	s = 0;
+	e = arr.size()
+	helper(arr, s, e);
+	return
+}
+
+
+
