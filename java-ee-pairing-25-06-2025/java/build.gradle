@@ -14,6 +14,8 @@ dependencies {
     implementation("org.seleniumhq.selenium:selenium-devtools-v118:4.14.0")
     implementation 'io.rest-assured:rest-assured:5.5.0'
     implementation 'io.github.bonigarcia:webdrivermanager:5.9.2'
+    // https://mvnrepository.com/artifact/org.projectlombok/lombok
+    implementation("org.projectlombok:lombok:0.11.0")
     testImplementation 'org.hamcrest:hamcrest:3.0'
 
     def testngVersion = '7.8.0'
@@ -30,10 +32,6 @@ dependencies {
     testImplementation "com.fasterxml.jackson.core:jackson-annotations:$jacksonVersion"
     testImplementation "org.slf4j:slf4j-api:$slf4jVersion"
     implementation("org.apache.logging.log4j:log4j-slf4j-impl:$log4jVersion")
-//    testImplementation "ch.qos.logback:logback-classic:$logbackVersion"
-//    testImplementation "ch.qos.logback:logback-core:$logbackVersion"
-//    testImplementation "org.apache.logging.log4j:log4j-api:$log4jVersion"
-//    testImplementation "org.apache.logging.log4j:log4j-core:$log4jVersion"
     testImplementation "org.freemarker:freemarker:$freemarkerVersion"
     testImplementation "io.cucumber:cucumber-java:$cucumberVersion"
     testImplementation "io.cucumber:cucumber-testng:$cucumberVersion"

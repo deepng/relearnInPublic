@@ -1,8 +1,8 @@
 package restAssured.apis;
 
-import restAssured.models.Customer;
-import restAssured.models.NewUserModel;
-import restAssured.models.SecurityQuestion;
+import models.Customer;
+import models.NewUserModel;
+import models.SecurityQuestion;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import helpers.Utils;
 

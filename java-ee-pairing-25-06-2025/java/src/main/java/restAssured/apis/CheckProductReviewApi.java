@@ -1,7 +1,7 @@
 package restAssured.apis;
 
 import io.restassured.response.Response;
-import restAssured.models.ProductReviews;
+import models.ProductReviews;
 
 import static io.restassured.RestAssured.given;
 

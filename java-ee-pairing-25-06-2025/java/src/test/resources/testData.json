@@ -1,7 +1,19 @@
 {
-  "validUserId": "deepak@ee.com",
-  "invalidUserId": "ee@deepak.com",
-  "validPassword": "eedeepak",
-  "invalidPassword": "deepeeeak",
+  "users" : [
+    {
+      "id": 1,
+      "userId": "deepak@ee.com",
+      "password": "eedeepak",
+      "type": "valid",
+      "userSecurityAnswer": "mistake"
+    },
+    {
+      "id": 2,
+      "userId": "ee@deepak.com",
+      "password": "deeeepak",
+      "type": "invalid",
+      "userSecurityAnswer": "second"
+    }
+  ],
   "baseUrl": "localhost:3000"
 }

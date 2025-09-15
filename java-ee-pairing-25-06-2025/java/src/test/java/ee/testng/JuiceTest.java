@@ -1,7 +1,11 @@
 package ee.testng;
 
+import helpers.TestDataReader;
 import helpers.Utils;
 import listeners.RetryAnalyzer;
+import models.Customer;
+import models.Products;
+import models.UserData;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebElement;
@@ -14,8 +18,6 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import restAssured.apis.*;
-import restAssured.models.Customer;
-import restAssured.models.Products;
 import selenium.SeleniumCustomException;
 import selenium.pageObjects.HomePage;
 import selenium.pageObjects.LoginPage;
@@ -24,12 +26,17 @@ import selenium.pageObjects.ProductDialog;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.Random;
 
 public class JuiceTest extends BaseTest {
     private static final String REVIEW_PRODUCT =  "Quince Juice (1000ml)";
     // OWASP Juice Shop Iron-Ons (16pcs)"; // ""OWASP Juice Shop T-Shirt"; // "OWASP Juice Shop \"King of the Hill\" Facemask";
     private static final String REVIEW_TEXT = "This is a Test Review with 1-10 and #$!%%^@";
+
+    private static final String defaultUserId = "deepak@ee.com";
+    private static final String defaultUserPassword = "eedeepak";
+    private static final String defaultUserAnswer = "simple";
 
     private static String address = "localhost";
     private static String port = "3000";
@@ -46,8 +53,10 @@ public class JuiceTest extends BaseTest {
     @BeforeClass
     void setup() throws IOException {
         //TODO Task1: Add your credentials to customer i.e. email, password and security answer.
-        customer = new Customer(testData.get("validUserId"), testData.get("validPassword"),
-                testData.get("validUserSecurityAnswer"));
+        Optional<UserData> firstUserData = TestDataReader.getInstance().getFirstUser();
+        UserData firstUser = firstUserData.orElseGet(() ->
+                new UserData(defaultUserId, defaultUserPassword, defaultUserAnswer));
+        customer = new Customer(firstUser.userId, firstUser.password, firstUser.userSecurityAnswer);
         cookie = loginAndCaptureCookie(customer.getEmail(), customer.getPassword());
         if (cookie.isEmpty()) {
             Assert.assertTrue(createTestUser(), "We couldn't create a test user");
@@ -155,7 +164,7 @@ public class JuiceTest extends BaseTest {
 
     private String getReviewComments() {
         return String.format("%s %s", Utils.getCurrentDateInFormat(Utils.DATE_FORMAT),
-                testData.getOrDefault("reviewComments", REVIEW_TEXT));
+                TestDataReader.getInstance().getTestData().getOrDefault("reviewComments", REVIEW_TEXT));
     }
 
     private String getTheProductToReview() {
@@ -167,7 +176,7 @@ public class JuiceTest extends BaseTest {
             Products.Data randomProduct = productListData.get(randomIndex);
             return randomProduct.getName();
         }
-        return testData.getOrDefault("productToReview", REVIEW_PRODUCT);
+        return TestDataReader.getInstance().getTestData().getOrDefault("productToReview", REVIEW_PRODUCT);
     }
 
     private Products getProductsList(String cookie) {

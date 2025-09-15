@@ -1,4 +1,4 @@
-package restAssured.models;
+package models;
 
 
 

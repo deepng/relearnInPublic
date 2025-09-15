@@ -1,9 +1,8 @@
 package ee.testng;
 
-import io.github.bonigarcia.wdm.WebDriverManager;
+import helpers.TestDataReader;
 import listeners.TestReporter;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Listeners;
@@ -15,39 +14,26 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.ResourceBundle;
 
+
 @Listeners({TestReporter.class})
 public abstract class BaseTest {
 
     public WebDriver driver;
-    public static Map<String, String> testData;
 
-    public void setUpTestData() {
-        // load test data from properties file
-        testData = new HashMap<>();
-        ResourceBundle bundle = ResourceBundle.getBundle("test");//.getKeys().collectEntries { key -> [ (key) : ResourceBundle.getBundle('testData.json').getString(key) ] }
-        bundle.keySet().forEach(key -> {
-            testData.put(key, bundle.getString(key));
-        });
-        Properties properties = System.getProperties();
-        for(String key : properties.stringPropertyNames()) {
-            // if key starts with "test.", usually used to differentiate system properties
-            if(key.startsWith("test."))
-                testData.put(key.replaceFirst("test.", ""), properties.getProperty(key));
-        }
-    }
+
 
     @BeforeSuite
     public void setUp() {
-        setUpTestData();
+        TestDataReader.getInstance().setUpTestData();
     }
 
     public void setUpDriver() {
+        Map<String, String> testData = TestDataReader.getInstance().getTestData();
         String browser = testData.get("browser");
         driver = DriverFactory.getDriver(browser);
         driver.manage().window().maximize();
         driver.manage().deleteAllCookies();
-        if(testData != null)
-            driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(testData.get("implicitWaitInSec") != null ?
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(testData.get("implicitWaitInSec") != null ?
                 Integer.parseInt(testData.get("implicitWaitInSec")) : 10));
     }
 

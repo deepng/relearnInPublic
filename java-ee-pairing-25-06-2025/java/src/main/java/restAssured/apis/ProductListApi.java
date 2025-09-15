@@ -1,6 +1,6 @@
 package restAssured.apis;
 
-import restAssured.models.Products;
+import models.Products;
 
 import static io.restassured.RestAssured.given;
 
