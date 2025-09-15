@@ -3,6 +3,7 @@ package helpers;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import groovyjarjarantlr4.v4.runtime.misc.NotNull;
 import models.UserData;
 
 import java.util.*;
@@ -47,6 +48,18 @@ public class TestDataReader {
                 return Optional.of(user);
         }
         return Optional.empty();
+    }
+
+    public String getBrowser() {
+        return TestDataReader.getInstance().getTestData().get("browser");
+    }
+
+    public String getBaseUrl() {
+        return TestDataReader.getInstance().getTestData().get("baseUrl");
+    }
+
+    public void addToTestData(@NotNull  String key, @NotNull String value) {
+        testData.put(key, value);
     }
 
     private static class InstanceHolder {

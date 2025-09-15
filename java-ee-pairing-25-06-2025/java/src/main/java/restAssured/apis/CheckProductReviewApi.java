@@ -2,6 +2,7 @@ package restAssured.apis;
 
 import io.restassured.response.Response;
 import models.ProductReviews;
+import restAssured.GetApi;
 
 import static io.restassured.RestAssured.given;
 

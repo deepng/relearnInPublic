@@ -2,6 +2,7 @@ package restAssured.apis;
 
 import groovyjarjarantlr4.v4.runtime.misc.NotNull;
 import io.restassured.response.Response;
+import restAssured.PostApi;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;

@@ -1,4 +1,4 @@
-package restAssured.apis;
+package restAssured;
 
 public class GetApi extends BaseApi {
 

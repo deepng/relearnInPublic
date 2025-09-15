@@ -10,7 +10,7 @@ import selenium.SeleniumUtils;
 
 import java.time.Duration;
 
-public class HomePage {
+public class HomePage extends BasePage {
 
     By nextPage = By.xpath("//button[@aria-label='Next page']");
     By basket = By.xpath("//button[@routerlink='/basket']");

@@ -1,6 +1,7 @@
 package restAssured.apis;
 
 import io.restassured.response.Response;
+import restAssured.PostApi;
 
 public class LoginApi extends PostApi {
 

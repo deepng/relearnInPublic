@@ -5,12 +5,13 @@ import models.NewUserModel;
 import models.SecurityQuestion;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import helpers.Utils;
+import restAssured.PostApi;
 
 import java.io.IOException;
 
 import static io.restassured.RestAssured.given;
 
-public class CreateUserApi extends PostApi{
+public class CreateUserApi extends PostApi {
 
     public CreateUserApi(String baseUrl) {
         super(baseUrl);

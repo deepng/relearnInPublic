@@ -1,34 +1,56 @@
 package cucumber;
 
+import helpers.TestDataReader;
 import io.cucumber.java.PendingException;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import org.openqa.selenium.WebDriver;
+import org.testng.Assert;
+import selenium.DriverFactory;
+import selenium.SeleniumCustomException;
+import selenium.pageObjects.HomePage;
+import selenium.pageObjects.LoginPage;
+
+import java.sql.Driver;
 
 public class JuiceShopStepDefns {
+    private WebDriver driver;
+    HomePage homePage;
+    LoginPage loginPage;
+    String baseUrl;
+
+    public JuiceShopStepDefns() {
+        String browser = TestDataReader.getInstance().getBrowser();
+        driver = DriverFactory.getDriver(browser);
+        baseUrl = TestDataReader.getInstance().getBaseUrl();
+        homePage = new HomePage();
+        loginPage = new LoginPage();
+    }
+
     @Then("can dismiss the welcome screen")
-    public void canDismissTheWelcomeScreen() {
+    public void canDismissTheWelcomeScreen() throws SeleniumCustomException {
         // Write code here that turns the phrase above into concrete actions
-        throw new PendingException();
+        homePage.closeWelcomePopup(driver);
     }
 
     @Given("open Juice shop application")
     public void openJuiceShopApplication() {
         // Write code here that turns the phrase above into concrete actions
-        throw new PendingException();
+        driver.get(baseUrl);
     }
 
     @Then("see the welcome screen")
-    public void seeTheWelcomeScreen() {
+    public void seeTheWelcomeScreen() throws SeleniumCustomException {
         // Write code here that turns the phrase above into concrete actions
-        throw new PendingException();
+        Assert.assertTrue(homePage.checkWelcomePage(driver), "We don't have a welcome screen");
     }
 
     @And("welcome screen has a welcome message {string}")
     public void welcomeScreenHasAWelcomeMessage(String arg0) {
         // Write code here that turns the phrase above into concrete actions
-        throw new PendingException();
+        Assert.assertTrue(homePage.checkForWelcomeMessage(driver), "We don't have a welcome message");
     }
 
     @Then("can launch the tutorial from the welcome screen")

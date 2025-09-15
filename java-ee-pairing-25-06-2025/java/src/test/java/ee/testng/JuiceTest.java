@@ -8,6 +8,7 @@ import models.Products;
 import models.UserData;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,10 +39,6 @@ public class JuiceTest extends BaseTest {
     private static final String defaultUserPassword = "eedeepak";
     private static final String defaultUserAnswer = "simple";
 
-    private static String address = "localhost";
-    private static String port = "3000";
-    private static String baseUrl = String.format("http://%s:%s", address, port);
-
     Logger logger = LoggerFactory.getLogger(JuiceTest.class);
 
     public Customer customer;
@@ -49,6 +46,10 @@ public class JuiceTest extends BaseTest {
     public HomePage homePage;
 
     public String cookie;
+    
+    // ThreadLocal variables for parallel execution
+    private static final ThreadLocal<WebDriver> threadLocalDriver = new ThreadLocal<>();
+    private static final ThreadLocal<String> threadLocalCookie = new ThreadLocal<>();
 
     @BeforeClass
     void setup() throws IOException {
@@ -70,21 +71,13 @@ public class JuiceTest extends BaseTest {
         return status.equalsIgnoreCase("success");
     }
 
-    /**
-     * Returns an empty string if we couldn't login
-     * @param user
-     * @param password
-     * @return
-     */
-    public String loginAndCaptureCookie(String user, String password) {
-        LoginApi loginApi = new LoginApi(baseUrl);
-        return loginApi.loginAndGetStatus(user, password);
-    }
+
 
     //TODO Task2: Login and post a product review using Selenium
     @Test(retryAnalyzer = RetryAnalyzer.class)
     void loginAndPostProductReviewViaUiTest(ITestContext testContext) throws InterruptedException, SeleniumCustomException {
         setUpDriver();
+        threadLocalDriver.set(driver);
 //        driver.get(baseUrl + "/#/login");
         loginPage = new LoginPage();
         loginPage.loadLoginPage(driver, baseUrl);
@@ -141,9 +134,10 @@ public class JuiceTest extends BaseTest {
 //        logger.debug(String.format("Status value is: %s", status));
 
         // TODO Retrieve token via login API
-        cookie = loginAndCaptureCookie(customer.getEmail(), customer.getPassword());
+        String localCookie = loginAndCaptureCookie(customer.getEmail(), customer.getPassword());
+        threadLocalCookie.set(localCookie);
 
-        Products productList = getProductsList(cookie);
+        Products productList = getProductsList(localCookie);
         int productId = 38;
         String productToReview = getTheProductToReview();
         for (Products.Data datum : productList.getData()) {
@@ -155,10 +149,10 @@ public class JuiceTest extends BaseTest {
         // TODO Use token to post review to product
         String reviewComments = getReviewComments();
         ReviewProductApi reviewProductApi = new ReviewProductApi(baseUrl);
-        reviewProductApi.putReviewFor(cookie, productId, reviewComments, customer.getEmail());
+        reviewProductApi.putReviewFor(localCookie, productId, reviewComments, customer.getEmail());
         // TODO Assert that the product review has persisted
         CheckProductReviewApi checkProductReviewApi = new CheckProductReviewApi(baseUrl);
-        Assert.assertTrue(checkProductReviewApi.validateThisProductReview(cookie, productId, reviewComments, customer.getEmail()),
+        Assert.assertTrue(checkProductReviewApi.validateThisProductReview(localCookie, productId, reviewComments, customer.getEmail()),
                 String.format("We reviewed product %s, but didn't find the review comments %s", productToReview, reviewComments));
     }
 
@@ -168,8 +162,9 @@ public class JuiceTest extends BaseTest {
     }
 
     private String getTheProductToReview() {
-        if(cookie != null && !cookie.isEmpty()) {
-            Products productsList = getProductsList(cookie);
+        String localCookie = threadLocalCookie.get();
+        if(localCookie != null && !localCookie.isEmpty()) {
+            Products productsList = getProductsList(localCookie);
             ArrayList<Products.Data> productListData = productsList.getData();
             Random random = new Random();
             int randomIndex = random.nextInt(productListData.size());
@@ -188,10 +183,17 @@ public class JuiceTest extends BaseTest {
     @AfterMethod
     public void takeScreenshotsWhenFailure(ITestResult testResult) throws IOException {
         // Take screenshot if test failed
-        if(driver != null && ITestResult.FAILURE == testResult.getStatus()) {
-            File screenshot = ((TakesScreenshot) this.driver).getScreenshotAs(OutputType.FILE);
+        WebDriver localDriver = threadLocalDriver.get();
+        if(localDriver != null && ITestResult.FAILURE == testResult.getStatus()) {
+            File screenshot = ((TakesScreenshot) localDriver).getScreenshotAs(OutputType.FILE);
             java.nio.file.Files.copy(screenshot.toPath(), java.nio.file.Paths.get("screenshots",
                     String.format("failed-test-screenshot-%s.png", Utils.getCurrentDateInFormat(Utils.SCREENSHOT_FORMAT))));
         }
+        // Clean up ThreadLocal resources
+        if(localDriver != null) {
+            localDriver.quit();
+            threadLocalDriver.remove();
+        }
+        threadLocalCookie.remove();
     }
 }

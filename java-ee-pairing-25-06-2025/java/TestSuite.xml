@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite name="JuiceShopTest">
-<Listeners>
-    <Listener class-name="listeners.TestReporter"/>
-</Listeners>
-    <test name="JuiceShopBasic">
+    <test name="JuiceShopBasic" parallel="classes" thread-count="3">
+        <groups>
+            <run>
+                <exclude name="load"/>
+            </run>
+        </groups>
         <classes>
-<!--            fix this-->
+            <class name="ee.testng.ApiTests"/>
             <class name="ee.testng.JuiceTest"/>
         </classes>
     </test>

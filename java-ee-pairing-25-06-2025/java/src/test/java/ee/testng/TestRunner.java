@@ -1,6 +1,9 @@
 package ee.testng;
 
+import helpers.TestDataReader;
 import io.cucumber.testng.CucumberOptions;
+import org.testng.ITestContext;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 @CucumberOptions(
@@ -10,10 +13,11 @@ import org.testng.annotations.Test;
         monochrome = true,
         tags = "@test"
 )
-public class TestRunner extends BaseTest {
+public class TestRunner extends BaseTest { // BaseTest extends AbstractTestNGCucumberTests
 
-    @Test
-    public void runTests() {
-        System.out.println("Running tests...");
+    @Override
+    @DataProvider(parallel = true)
+    public Object[][] scenarios() {
+        return super.scenarios();
     }
 }

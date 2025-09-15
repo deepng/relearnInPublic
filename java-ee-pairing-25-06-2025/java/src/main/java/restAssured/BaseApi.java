@@ -1,6 +1,4 @@
-package restAssured.apis;
-
-import io.restassured.response.Response;
+package restAssured;
 
 public abstract class BaseApi {
     protected String baseUrl;
