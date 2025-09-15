@@ -1,3 +1,5 @@
+import java.text.SimpleDateFormat
+
 plugins {
     id 'java'
 }
@@ -43,4 +45,9 @@ dependencies {
 
 test {
     useTestNG()
+}
+
+tasks.withType(Test).configureEach {
+    def outputDir = file("$projectDir/reports")
+    reports.html.outputLocation = outputDir
 }

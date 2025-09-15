@@ -1,6 +1,7 @@
 package ee.testng;
 
 import helpers.Utils;
+import listeners.RetryAnalyzer;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebElement;
@@ -72,7 +73,7 @@ public class JuiceTest extends BaseTest {
     }
 
     //TODO Task2: Login and post a product review using Selenium
-    @Test
+    @Test(retryAnalyzer = RetryAnalyzer.class)
     void loginAndPostProductReviewViaUiTest(ITestContext testContext) throws InterruptedException, SeleniumCustomException {
         setUpDriver();
 //        driver.get(baseUrl + "/#/login");
@@ -80,13 +81,10 @@ public class JuiceTest extends BaseTest {
         loginPage.loadLoginPage(driver, baseUrl);
         Assert.assertTrue(loginPage.getLoginPageHeader(driver).getText().contains("Login"),
                 "We are not in the login page");
-        Thread.sleep(2000);
         // TODO Dismiss popup (click close)
         loginPage.closeWelcomePopup(driver);
-        Thread.sleep(2000);
         loginPage.login(driver, customer.getEmail(), customer.getPassword());
         logger.debug("We have logged in with user: {}", customer.getEmail());
-        Thread.sleep(2000);
         homePage = new HomePage();
 //        emailField.sendKeys(testData.get("validEmail"));
 //        passwordField.sendKeys(testData.get("validPassword"));
@@ -112,7 +110,7 @@ public class JuiceTest extends BaseTest {
 
 
     // TODO Task3: Login and post a product review using the Juice Shop API
-    @Test
+    @Test(invocationCount = 5, threadPoolSize = 2)
     void loginAndPostProductReviewViaApiTest() {
         // Example HTTP request with assertions using Rest Assured. Can be removed.
 //        String status = given()

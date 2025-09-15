@@ -7,6 +7,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Listeners;
+import selenium.DriverFactory;
 
 import java.time.Duration;
 import java.util.HashMap;
@@ -40,10 +41,9 @@ public abstract class BaseTest {
         setUpTestData();
     }
 
-
     public void setUpDriver() {
-        WebDriverManager.chromedriver().setup();
-        driver = new ChromeDriver();
+        String browser = testData.get("browser");
+        driver = DriverFactory.getDriver(browser);
         driver.manage().window().maximize();
         driver.manage().deleteAllCookies();
         if(testData != null)
