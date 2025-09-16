@@ -94,7 +94,7 @@ public class SeleniumUtils {
             if(value != null && !value.isEmpty()) {
                 try {
                     webElement = findElementForTypeValue(key, value, driver);
-                    if (webElement != null)
+                    if (webElement != null && webElement.isDisplayed())
                         break;
                 } catch (Exception e) {
                     e.printStackTrace();

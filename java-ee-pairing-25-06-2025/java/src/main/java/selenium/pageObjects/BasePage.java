@@ -21,6 +21,7 @@ public abstract class BasePage {
     private WebElement getDismissButton(WebDriver driver) throws SeleniumCustomException {
         Map<SeleniumTypes, String> findBy = new HashMap<>();
         findBy.put(SeleniumTypes.TEXT, "Dismiss");
+        findBy.put(SeleniumTypes.XPATH, "//button[@aria-label=\"Close Welcome Banner\"]");
          return SeleniumUtils.findElementWithOptions(findBy, driver);
     }
 

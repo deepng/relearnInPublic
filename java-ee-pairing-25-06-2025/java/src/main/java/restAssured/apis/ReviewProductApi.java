@@ -2,17 +2,17 @@ package restAssured.apis;
 
 import groovyjarjarantlr4.v4.runtime.misc.NotNull;
 import io.restassured.response.Response;
-import restAssured.PostApi;
+import restAssured.PutApi;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
 
-public class ReviewProductApi extends PostApi {
+public class ReviewProductApi extends PutApi {
 
     String userId;
     String review;
 
-    public ReviewProductApi(@NotNull String baseUrl) {
+    public ReviewProductApi(String baseUrl) {
         super(baseUrl);
     }
 

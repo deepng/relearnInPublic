@@ -33,7 +33,7 @@ import java.util.Random;
 public class JuiceTest extends BaseTest {
     private static final String REVIEW_PRODUCT =  "Quince Juice (1000ml)";
     // OWASP Juice Shop Iron-Ons (16pcs)"; // ""OWASP Juice Shop T-Shirt"; // "OWASP Juice Shop \"King of the Hill\" Facemask";
-    private static final String REVIEW_TEXT = "This is a Test Review with 1-10 and #$!%%^@";
+    private static final String REVIEW_TEXT = "This is a Test Review with 1-10 and #$!^@";
 
     private static final String defaultUserId = "deepak@ee.com";
     private static final String defaultUserPassword = "eedeepak";
@@ -63,6 +63,7 @@ public class JuiceTest extends BaseTest {
             Assert.assertTrue(createTestUser(), "We couldn't create a test user");
             cookie = loginAndCaptureCookie(customer.getEmail(), customer.getPassword());
         }
+        threadLocalCookie.set(cookie);
     }
 
     public boolean createTestUser() throws IOException {
@@ -70,8 +71,6 @@ public class JuiceTest extends BaseTest {
         String status = createUserApi.createNewUser(customer);
         return status.equalsIgnoreCase("success");
     }
-
-
 
     //TODO Task2: Login and post a product review using Selenium
     @Test(retryAnalyzer = RetryAnalyzer.class)

@@ -1,8 +1,10 @@
 package ee.testng;
 
+import helpers.Constants;
 import helpers.TestDataReader;
 import io.cucumber.testng.AbstractTestNGCucumberTests;
 import listeners.TestReporter;
+import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.WebDriver;
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeSuite;
@@ -11,6 +13,7 @@ import restAssured.apis.LoginApi;
 import selenium.DriverFactory;
 
 import java.time.Duration;
+import java.util.HashMap;
 import java.util.Map;
 
 
@@ -26,7 +29,7 @@ public abstract class BaseTest extends AbstractTestNGCucumberTests {
     @BeforeSuite
     public void setUp() {
         TestDataReader.getInstance().setUpTestData();
-        baseUrl = TestDataReader.getInstance().getTestData().get("baseUrl");
+        baseUrl = TestDataReader.getInstance().getTestData().get(Constants.BaseURL);
         if (baseUrl == null) {
             baseUrl = String.format("http://%s:%s", address, port);
         }
@@ -45,7 +48,7 @@ public abstract class BaseTest extends AbstractTestNGCucumberTests {
 
     public void setUpDriver() {
         Map<String, String> testData = TestDataReader.getInstance().getTestData();
-        String browser = testData.get("browser");
+        String browser = testData.get(Constants.BROWSER);
         driver = DriverFactory.getDriver(browser);
         driver.manage().window().maximize();
         driver.manage().deleteAllCookies();

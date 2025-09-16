@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import groovyjarjarantlr4.v4.runtime.misc.NotNull;
+import lombok.Synchronized;
 import models.UserData;
 
 import java.util.*;
@@ -13,6 +14,7 @@ public class TestDataReader {
 
     private TestDataReader() {}
 
+    @Synchronized
     public static TestDataReader getInstance() {
         return InstanceHolder.testDataInstance;
     }

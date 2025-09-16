@@ -7,6 +7,11 @@ import restAssured.GetApi;
 import static io.restassured.RestAssured.given;
 
 public class CheckProductReviewApi extends GetApi {
+    @Override
+    protected void setHeaders() {
+
+    }
+
     public CheckProductReviewApi(String baseUrl) {
         super(baseUrl);
     }

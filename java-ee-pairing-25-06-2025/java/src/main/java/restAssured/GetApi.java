@@ -1,9 +1,20 @@
 package restAssured;
 
-public class GetApi extends BaseApi {
+import io.restassured.response.Response;
+import io.restassured.specification.RequestSpecification;
 
-    GetApi(String baseUrl) {
+import static io.restassured.RestAssured.given;
+
+public abstract class GetApi extends BaseApi {
+
+    public GetApi(String baseUrl) {
         super(baseUrl);
     }
 
+
+    protected Response execute() {
+        setHeaders();
+        RequestSpecification requestSpecification = generateRequestSpec();
+        return given().spec(requestSpecification).post();
+    }
 }

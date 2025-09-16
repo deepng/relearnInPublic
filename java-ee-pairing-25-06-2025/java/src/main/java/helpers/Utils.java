@@ -5,7 +5,7 @@ import java.time.Instant;
 import java.util.Date;
 import java.util.Locale;
 
-public class Utils {
+public final class Utils {
 
     public static final String DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
     public static final String SCREENSHOT_FORMAT = "yyyy-MM-dd'T'HH-mm-ss-SSS'Z'";

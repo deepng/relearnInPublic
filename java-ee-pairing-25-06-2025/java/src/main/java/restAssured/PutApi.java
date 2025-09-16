@@ -6,11 +6,12 @@ import io.restassured.specification.RequestSpecification;
 
 import static io.restassured.RestAssured.given;
 
-public abstract class PostApi extends BaseApi {
+public abstract class PutApi extends BaseApi {
+
+    public RequestSpecBuilder requestSpecBuilder;
 
 
-
-    public PostApi(String baseUrl) {
+    public PutApi(String baseUrl) {
         super(baseUrl);
         requestSpecBuilder = new RequestSpecBuilder();
     }
@@ -25,5 +26,6 @@ public abstract class PostApi extends BaseApi {
         return given().spec(requestSpecification).post();
     }
 
+    protected abstract void setHeaders();
 
 }

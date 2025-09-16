@@ -12,15 +12,16 @@ import java.time.Duration;
 
 public class HomePage extends BasePage {
 
-    By nextPage = By.xpath("//button[@aria-label='Next page']");
-    By basket = By.xpath("//button[@routerlink='/basket']");
-    String meWantIT = "Me want it!"; // or use //a[@aria-label='dismiss cookie message']
+    private final By nextPage = By.xpath("//button[@aria-label='Next page']");
+    private final By basket = By.xpath("//button[@routerlink='/basket']");
 
     public WebElement getTheBasket(WebDriver driver) {
         return driver.findElement(basket);
     }
 
     public void clearWantIn(WebDriver driver) {
+        // or use //a[@aria-label='dismiss cookie message']
+        String meWantIT = "Me want it!";
         WebElement wantInElement = SeleniumUtils.findElementWithoutExceptions(driver,
                 By.xpath("//a[normalize-space()='"+ meWantIT +"']"));
 //                By.xpath("//*[text()='"+meWantIT+"']"));
