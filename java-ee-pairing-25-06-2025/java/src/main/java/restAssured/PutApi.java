@@ -23,7 +23,7 @@ public abstract class PutApi extends BaseApi {
         setHeaders();
         buildBody();
         RequestSpecification requestSpecification = generateRequestSpec();
-        return given().spec(requestSpecification).post();
+        return given().spec(requestSpecification).put();
     }
 
     protected abstract void setHeaders();

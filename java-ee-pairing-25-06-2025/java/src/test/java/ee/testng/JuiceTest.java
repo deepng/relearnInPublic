@@ -1,5 +1,7 @@
 package ee.testng;
 
+import framework.IScenario;
+import framework.LoginScenario;
 import helpers.TestDataReader;
 import helpers.Utils;
 import listeners.RetryAnalyzer;
@@ -31,7 +33,7 @@ import java.util.Optional;
 import java.util.Random;
 
 public class JuiceTest extends BaseTest {
-    private static final String REVIEW_PRODUCT =  "Quince Juice (1000ml)";
+    private static final String REVIEW_PRODUCT =  "Apple Juice (1000ml)";
     // OWASP Juice Shop Iron-Ons (16pcs)"; // ""OWASP Juice Shop T-Shirt"; // "OWASP Juice Shop \"King of the Hill\" Facemask";
     private static final String REVIEW_TEXT = "This is a Test Review with 1-10 and #$!^@";
 
@@ -93,6 +95,9 @@ public class JuiceTest extends BaseTest {
         Assert.assertTrue(homePage.getTheBasket(driver).isDisplayed(),
                 "We might not have logged in successfully");
 
+
+//        IScenario scenario = new LoginScenario();
+
         // TODO Navigate to product and post review
         String productToReview = getTheProductToReview();
         logger.info("Let's review {}", productToReview);
@@ -107,8 +112,6 @@ public class JuiceTest extends BaseTest {
         // TODO Assert that the review has been created successfully
         productDialog.checkReviewsFor(driver, reviewComments, customer.getEmail());
     }
-
-
 
     // TODO Task3: Login and post a product review using the Juice Shop API
     @Test(invocationCount = 5, threadPoolSize = 2)
@@ -162,14 +165,14 @@ public class JuiceTest extends BaseTest {
 
     private String getTheProductToReview() {
         String localCookie = threadLocalCookie.get();
-        if(localCookie != null && !localCookie.isEmpty()) {
-            Products productsList = getProductsList(localCookie);
-            ArrayList<Products.Data> productListData = productsList.getData();
-            Random random = new Random();
-            int randomIndex = random.nextInt(productListData.size());
-            Products.Data randomProduct = productListData.get(randomIndex);
-            return randomProduct.getName();
-        }
+//        if(localCookie != null && !localCookie.isEmpty()) {
+//            Products productsList = getProductsList(localCookie);
+//            ArrayList<Products.Data> productListData = productsList.getData();
+//            Random random = new Random();
+//            int randomIndex = random.nextInt(productListData.size());
+//            Products.Data randomProduct = productListData.get(randomIndex);
+//            return randomProduct.getName();
+//        }
         return TestDataReader.getInstance().getTestData().getOrDefault("productToReview", REVIEW_PRODUCT);
     }
 
