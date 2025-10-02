@@ -1,6 +1,10 @@
 package com.nidee.remoteLearn.algo;
 
+import com.nidee.remoteLearn.algoProblems.Fibonnacci;
+import com.nidee.remoteLearn.algoProblems.MoveAllZeros;
+import com.nidee.remoteLearn.algoProblems.PalindromicStrings;
 import org.testng.Assert;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import java.util.ArrayList;
@@ -34,5 +38,74 @@ public class SortingAndSearchingQuestions {
 
     }
 
+    @Test
+    public void testFibonnacciRecursion() {
+        int n = 10;
+        List<Integer> ans = new ArrayList<>(n+1);
+        for(int i=0; i<=n; i++) {
+            ans.add(null);
+        }
+        Fibonnacci fibonnacci = new Fibonnacci();
+        int result = fibonnacci.fibRecursion(ans, n);
+        Assert.assertEquals(result, 55, String.format("We were expecting %s, but got %s. They are not same ", 55, result));
+    }
+
+    @Test
+    public void testFibonnacciIteration() {
+        int n = 10;
+        List<Integer> ans = new ArrayList<>(n+1);
+        for(int i=0; i<=n; i++) {
+            ans.add(null);
+        }
+        Fibonnacci fibonnacci = new Fibonnacci();
+        int result = fibonnacci.fibRecursion(ans, n);
+        Assert.assertEquals(result, 55, String.format("We were expecting %s, but got %s. They are not same ", 55, result));
+    }
+
+    @Test(dataProvider = "testMoveNonZeroData")
+    public void testMoveNonZero(int[] arr, int[] expected) {
+//        int[] arr = {0,1,0,3,12};
+//        int[] expected = {1,3,12,0,0};
+        MoveAllZeros moveAllZeros = new MoveAllZeros();
+        arr = moveAllZeros.moveAllZeros(arr);
+        Assert.assertEquals(arr, expected, String.format("We were expecting %s, but got %s. They are not same ", Arrays.toString(expected), Arrays.toString(arr)));
+    }
+
+    @DataProvider(name = "testMoveNonZeroData")
+    public Object[][] testMoveNonZeroData() {
+        return new Object[][] {
+                {new int[]{0,1,0,3,12}, new int[]{1,3,12,0,0}},
+                {new int[]{0,0,1}, new int[]{1,0,0}},
+                {new int[]{1,2,3}, new int[]{1,2,3}},
+                {new int[]{0,0,0}, new int[]{0,0,0}},
+                {new int[]{}, new int[]{}},
+                {new int[]{0}, new int[]{0}},
+                {new int[]{1}, new int[]{1}},
+                {new int[]{0,1}, new int[]{1,0}},
+                {new int[]{1,0}, new int[]{1,0}},
+        };
+    }
+
+    @Test(dataProvider = "testPalindromicDecompositionData")
+    public void testPalindromicDecomposition(String s, ArrayList<String> expected) {
+        PalindromicStrings palindromicStrings = new PalindromicStrings();
+        ArrayList<String> result = palindromicStrings.generate_palindromic_decompositions(s);
+        Assert.assertEqualsNoOrder(result.toArray(), expected.toArray(),
+                String.format("We were expecting %s, but got %s. They are not same ", expected, result));
+    }
+
+
+    @DataProvider(name = "testPalindromicDecompositionData")
+    public Object[][] testPalindromicDecompositionData() {
+        return new Object[][] {
+                {"abracadabra", new ArrayList<>(Arrays.asList("a", "b", "r", "a", "c", "a", "d", "a", "b", "r", "a", "ada", "aca"))},
+                {"abba", new ArrayList<>(Arrays.asList("a", "b", "b", "a", "bb", "abba"))},
+                {"racecar", new ArrayList<>(Arrays.asList("r", "a", "c", "e", "c", "a", "r", "cec", "aceca", "racecar"))},
+                {"noon", new ArrayList<>(Arrays.asList("n", "o", "o", "n", "oo", "noon"))},
+                {"abc", new ArrayList<>(Arrays.asList("a", "b", "c"))},
+                {"a", new ArrayList<>(Arrays.asList("a"))},
+                {"", new ArrayList<>()}
+        };
+    }
 
 }

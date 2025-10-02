@@ -1,10 +1,7 @@
 package com.nidee.remoteLearn.algo;
 
 import com.nidee.remoteLearn.algoProblems.SumProblems;
-import com.nidee.remoteLearn.sort.BubbleSort;
-import com.nidee.remoteLearn.sort.GPTQuickSort;
-import com.nidee.remoteLearn.sort.SelectionSort;
-import com.nidee.remoteLearn.sort.Sort;
+import com.nidee.remoteLearn.sort.*;
 import org.springframework.util.Assert;
 import org.testng.annotations.Test;
 
@@ -99,7 +96,6 @@ public class SortTest {
     public void test2Sums() {
         Date date = new Date();
         long startTime = date.getTime();
-        Sort sort = new SelectionSort();
         SumProblems sumProblems = new SumProblems();
         Set<List<Integer>> pairsWhoGiveSums = sumProblems.getPairsWhoGiveSumsWithOutSorting(target, arr);
         assert(pairsWhoGiveSums.size() == ans);
@@ -112,11 +108,32 @@ public class SortTest {
     public void test2SumsWithSorting() {
         Date date = new Date();
         long startTime = date.getTime();
-        Sort sort = new SelectionSort();
         SumProblems sumProblems = new SumProblems();
         Set<List<Integer>> pairsWhoGiveSums = sumProblems.getPairsWhoGiveSumsWithSorting(target, arr);
         assert(pairsWhoGiveSums.size() == ans);
         long endTime = date.getTime();
+        logger.log(Level.INFO, "Time taken to sort the array: " + (endTime - startTime) + "ms");
+    }
+
+    @Test
+    public void testInsertionSort() {
+        Date date = new Date();
+        long startTime = date.getTime();
+         Sort sort = new InsertionSort();
+         int[] sortedArray = sort.resolveInt(arrayToSort);
+        long endTime = date.getTime();
+         assert(Arrays.equals(finalSortedArray,sortedArray));
+        logger.log(Level.INFO, "Time taken to sort the array: " + (endTime - startTime) + "ms");
+    }
+
+    @Test
+    public void testMergeSort() {
+        Date date = new Date();
+        long startTime = date.getTime();
+        Sort sort = new MergeSort();
+        int[] sortedArray = sort.resolveInt(arrayToSort);
+        long endTime = date.getTime();
+        assert(Arrays.equals(finalSortedArray,sortedArray));
         logger.log(Level.INFO, "Time taken to sort the array: " + (endTime - startTime) + "ms");
     }
 }
