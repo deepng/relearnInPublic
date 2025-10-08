@@ -19,6 +19,7 @@ import java.util.List;
 public class PalindromicStrings {
 
     ArrayList<String> output = new ArrayList();
+    ArrayList<String> result = new ArrayList();
 
     public  ArrayList<String> generate_palindromic_decompositions(String s) {
         // Write your code here
@@ -38,6 +39,20 @@ public class PalindromicStrings {
         }
         return output;
     }
+
+
+    public  List<String> helper(String s, int i, String slate, String lastString) {
+        if(i == s.length()-1) {
+            if(isPalindrome(s.substring(i, s.length())))
+                result.add(s.substring(i, s.length()));
+        }
+//        slate.
+
+
+        return result;
+    }
+
+
 
     public boolean isPalindrome(String s) {
         int i=0;

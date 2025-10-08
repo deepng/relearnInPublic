@@ -5,10 +5,7 @@ import com.nidee.remoteLearn.sort.*;
 import org.springframework.util.Assert;
 import org.testng.annotations.Test;
 
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -134,6 +131,17 @@ public class SortTest {
         int[] sortedArray = sort.resolveInt(arrayToSort);
         long endTime = date.getTime();
         assert(Arrays.equals(finalSortedArray,sortedArray));
+        logger.log(Level.INFO, "Time taken to sort the array: " + (endTime - startTime) + "ms");
+    }
+
+    @Test
+    public void testMergeSortArray() {
+        Date date = new Date();
+        long startTime = date.getTime();
+        MergeSort sort = new MergeSort();
+        ArrayList<Integer> sortedArray = sort.merge_sort(new ArrayList<>(Collections.nCopies(arrayToSort.length, 0)));
+        long endTime = date.getTime();
+        assert(Arrays.equals(finalSortedArray,sortedArray.stream().mapToInt(i->i).toArray()));
         logger.log(Level.INFO, "Time taken to sort the array: " + (endTime - startTime) + "ms");
     }
 }

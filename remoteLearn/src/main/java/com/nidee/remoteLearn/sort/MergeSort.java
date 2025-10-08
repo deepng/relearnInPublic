@@ -1,5 +1,7 @@
 package com.nidee.remoteLearn.sort;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 public class MergeSort implements Sort {
@@ -35,4 +37,42 @@ public class MergeSort implements Sort {
         }
         return merged;
     }
+
+    public ArrayList<Integer> merge_sort(ArrayList<Integer> arr) {
+        // Write your code here.
+        return helper(arr, 0, arr.size() - 1);
+    }
+
+    public ArrayList<Integer> helper(ArrayList<Integer> arr, int start, int end) {
+        if(start == end) {
+            ArrayList<Integer> base = new ArrayList<>();
+            base.add(arr.get(start));
+            return base;
+        }
+        int mid = (end - start) / 2 + start;
+        ArrayList<Integer> left = helper(arr, start, mid);
+        ArrayList<Integer> right = helper(arr, mid+1, end);
+        return merge(left, right);
+    }
+
+    private ArrayList<Integer> merge(ArrayList<Integer> left, ArrayList<Integer> right) {
+        ArrayList<Integer> merged = new ArrayList<>();
+        int i=0, j=0;
+        for(;i<left.size() && j<right.size();) {
+            if(left.get(i) <= right.get(j)) {
+                merged.add(left.get(i));
+                i++;
+            } else {
+                merged.add(right.get(j));
+                j++;
+            }
+        }
+        while(i < left.size())
+            merged.add(left.get(i++));
+        while (j < right.size())
+            merged.add(right.get(j++));
+        return merged;
+    }
+
+
 }
