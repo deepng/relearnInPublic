@@ -22,8 +22,9 @@ def findLHSMap(nums: list[int]) -> int:
     result = 0
     for n in nums:
          kv[n] = kv.setdefault(n, 0) + 1
-         if kv.get(n+1):
-              result = max(result, kv[n] + kv[n+1])
+    for k in kv.keys():
+         if kv.get(k+1):
+              result = max(result, kv[k] + kv[k+1])
     return result
 
 if __name__ == '__main__':
